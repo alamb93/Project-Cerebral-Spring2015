@@ -21,13 +21,16 @@ namespace Cerebral
         private Texture2D background;
         private Texture2D dont;
         private SpriteFont font;
+        private AnimatedSprite animatedSprite;
         private int score = 0;
+        private MouseState oldState;
 
         public Game1()
             : base()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            this.IsMouseVisible = true;
         }
 
         /// <summary>
@@ -54,6 +57,8 @@ namespace Cerebral
             background = Content.Load<Texture2D>("Assets/Art/forest"); // change these names to the names of your images
             dont = Content.Load<Texture2D>("Assets/Art/dont");
             font = Content.Load<SpriteFont>("Assets/Font/SpriteFont1");
+            Texture2D texture = Content.Load<Texture2D>("Assets/Art/SmileyWalk");
+            animatedSprite = new AnimatedSprite(texture, 4, 4);
             // TODO: use this.Content to load your game content here
         }
 
@@ -78,8 +83,21 @@ namespace Cerebral
                 Exit();
 
             // TODO: Add your update logic here
-            score++;
             base.Update(gameTime);
+            animatedSprite.Update();
+            MouseState mouseState = Mouse.GetState();
+            MouseState newState = Mouse.GetState();
+            int x = mouseState.X;
+            int y = mouseState.Y;
+            if (newState.LeftButton == ButtonState.Pressed && oldState.LeftButton == ButtonState.Released)
+            {
+                if(x > 540 && y > 220 && x < 540+dont.Height && y < 220+dont.Width ) {
+                    score++;
+                    background = dont;
+                }
+                
+            }
+            oldState = newState; // this reassigns the old state so that it is ready for next time
         }
 
         /// <summary>
@@ -89,13 +107,17 @@ namespace Cerebral
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
             spriteBatch.Begin();
 
             spriteBatch.Draw(background, new Rectangle(0, 0, 800, 480), Color.Gray);
             spriteBatch.Draw(dont, new Vector2(540, 220), Color.White);
-            spriteBatch.DrawString(font, "CEREBRAL", new Vector2(130, 100), Color.Crimson);
+            spriteBatch.DrawString(font, "How many Didn't? " + score, new Vector2(130, 100), Color.Crimson);
 
             spriteBatch.End();
+
+            animatedSprite.Draw(spriteBatch, new Vector2(400, 200));
+
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
