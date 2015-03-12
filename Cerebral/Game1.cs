@@ -23,6 +23,9 @@ namespace Cerebral
         private SpriteFont font;
         private AnimatedSprite animatedSprite;
         private int score = 0;
+        private int height;
+        private int width;
+        private float length;
         private MouseState oldState;
 
         public Game1()
@@ -59,6 +62,9 @@ namespace Cerebral
             font = Content.Load<SpriteFont>("Assets/Font/SpriteFont1");
             Texture2D texture = Content.Load<Texture2D>("Assets/Art/SmileyWalk");
             animatedSprite = new AnimatedSprite(texture, 4, 4);
+            height = GraphicsDevice.PresentationParameters.BackBufferHeight;
+            width = GraphicsDevice.PresentationParameters.BackBufferWidth;
+            length = font.MeasureString("Cerebral").Length();
             // TODO: use this.Content to load your game content here
         }
 
@@ -79,23 +85,15 @@ namespace Cerebral
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
             // TODO: Add your update logic here
             base.Update(gameTime);
-            animatedSprite.Update();
             MouseState mouseState = Mouse.GetState();
             MouseState newState = Mouse.GetState();
             int x = mouseState.X;
             int y = mouseState.Y;
             if (newState.LeftButton == ButtonState.Pressed && oldState.LeftButton == ButtonState.Released)
             {
-                if(x > 540 && y > 220 && x < 540+dont.Height && y < 220+dont.Width ) {
-                    score++;
-                    background = dont;
-                }
-                
+           // Move to the first scene  
             }
             oldState = newState; // this reassigns the old state so that it is ready for next time
         }
@@ -106,17 +104,17 @@ namespace Cerebral
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin();
 
-            spriteBatch.Draw(background, new Rectangle(0, 0, 800, 480), Color.Gray);
-            spriteBatch.Draw(dont, new Vector2(540, 220), Color.White);
-            spriteBatch.DrawString(font, "How many Didn't? " + score, new Vector2(130, 100), Color.Crimson);
+            //spriteBatch.Draw(background, new Rectangle(0, 0, 800, 480), Color.Gray);
+            //spriteBatch.Draw(dont, new Vector2(540, 220), Color.White);
+            spriteBatch.DrawString(font, "Cerebral", new Vector2(height/2, width / 2 -length), Color.White);
 
             spriteBatch.End();
 
-            animatedSprite.Draw(spriteBatch, new Vector2(400, 200));
+           // animatedSprite.Draw(spriteBatch, new Vector2(400, 200));
 
             // TODO: Add your drawing code here
 
