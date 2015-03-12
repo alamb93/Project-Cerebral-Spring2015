@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
+using Cerebral.Scenes;
 #endregion
 
 namespace Cerebral
@@ -93,7 +94,9 @@ namespace Cerebral
             int y = mouseState.Y;
             if (newState.LeftButton == ButtonState.Pressed && oldState.LeftButton == ButtonState.Released)
             {
-           // Move to the first scene  
+                Scene1 nextScene = new Scene1();
+                nextScene.Update();
+                this.Dispose();
             }
             oldState = newState; // this reassigns the old state so that it is ready for next time
         }
