@@ -7,10 +7,17 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
+using Cerebral.Scenes;
+using Cerebral.Content;
 #endregion
 
 namespace Cerebral
 {
+    enum Screen
+    {
+        Scene1,
+        StartScreen
+    }
     /// <summary>
     /// This is the main type for your game
     /// </summary>
@@ -18,16 +25,17 @@ namespace Cerebral
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        private Texture2D background;
-        private Texture2D dont;
-        private SpriteFont font;
-        private int score = 0;
+        Scene1 sceneOne;
+        StartScreen startScreen;
+        Screen currentScreen;
+        Camera cam;
 
         public Game1()
             : base()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            this.IsMouseVisible = true;
         }
 
         /// <summary>
@@ -51,9 +59,9 @@ namespace Cerebral
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            background = Content.Load<Texture2D>("Assets/Art/forest"); // change these names to the names of your images
-            dont = Content.Load<Texture2D>("Assets/Art/dont");
-            font = Content.Load<SpriteFont>("Assets/Font/SpriteFont1");
+            startScreen = new StartScreen(this);
+            currentScreen = Screen.StartScreen;
+            cam = new Camera(GraphicsDevice.Viewport);
             // TODO: use this.Content to load your game content here
         }
 
@@ -74,12 +82,21 @@ namespace Cerebral
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
             // TODO: Add your update logic here
-            score++;
             base.Update(gameTime);
+           
+            switch (currentScreen)
+            {
+                case Screen.Scene1:
+                    if (sceneOne != null)
+                        sceneOne.Update();
+                    break;
+                case Screen.StartScreen:
+                    if (startScreen != null)
+                        startScreen.Update();
+                        break;
+            }
+            cam.Update();
         }
 
         /// <summary>
@@ -88,17 +105,35 @@ namespace Cerebral
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+           // spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, null, null, null, null, cam.Transform);
             spriteBatch.Begin();
-
-            spriteBatch.Draw(background, new Rectangle(0, 0, 800, 480), Color.Gray);
-            spriteBatch.Draw(dont, new Vector2(540, 220), Color.White);
-            spriteBatch.DrawString(font, "CEREBRAL", new Vector2(130, 100), Color.Crimson);
-
+            switch (currentScreen)
+            {
+                case Screen.Scene1:
+                    if (sceneOne != null)
+                        sceneOne.Draw(spriteBatch);
+                    break;
+                case Screen.StartScreen:
+                    if (startScreen != null)   
+                        startScreen.Draw(spriteBatch);
+                    break;
+            }
             spriteBatch.End();
+            //spriteBatch.Draw(background, new Rectangle(0, 0, 800, 480), Color.Gray);
+            //spriteBatch.Draw(dont, new Vector2(540, 220), Color.White);
+
+           // animatedSprite.Draw(spriteBatch, new Vector2(400, 200));
+
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
+        }
+
+        public void start()
+        {
+            sceneOne = new Scene1(this);
+            currentScreen = Screen.Scene1;
+            startScreen = null;
         }
     }
 }

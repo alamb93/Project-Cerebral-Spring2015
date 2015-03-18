@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cerebral", "Cerebral\Cerebr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CerebralContent", "CerebralContent\CerebralContent\CerebralContent.csproj", "{E93F7759-5D10-420C-953D-0140A4F00A3A}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "CerebralContentContent", "CerebralContent\CerebralContentContent\CerebralContentContent.contentproj", "{7A61DD6B-63C6-4F46-BFAF-0617797591A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CerebralGameContent", "CerebralContent\CerebralContentContent\CerebralGameContent.contentproj", "{7A61DD6B-63C6-4F46-BFAF-0617797591A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

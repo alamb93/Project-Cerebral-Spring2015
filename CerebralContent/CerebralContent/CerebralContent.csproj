@@ -46,10 +46,14 @@
     <Reference Include="mscorlib" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CerebralContentContent\CerebralContentContent.contentproj">
-      <Name>CerebralContentContent</Name>
+    <ProjectReference Include="..\CerebralContentContent\CerebralGameContent.contentproj">
+      <Name>CerebralGameContent</Name>
       <XnaReferenceType>Content</XnaReferenceType>
+      <Project>{7A61DD6B-63C6-4F46-BFAF-0617797591A3}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
