@@ -35,7 +35,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AnimatedSprite.cs" />
+    <Compile Include="Content\Camera.cs" />
     <Compile Include="StartScreen.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Program.cs" />
@@ -52,9 +52,7 @@
   <ItemGroup>
     <Content Include="Icon.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Content\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\CerebralContent\CerebralContent\CerebralContent.csproj">
       <Project>{e93f7759-5d10-420c-953d-0140a4f00a3a}</Project>

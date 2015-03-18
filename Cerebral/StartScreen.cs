@@ -17,7 +17,6 @@ namespace Cerebral
         Game1 game;
         private MouseState oldState;
 
-
         public StartScreen(Game1 game)
         {
             this.game = game;
@@ -31,10 +30,7 @@ namespace Cerebral
         public void Draw(SpriteBatch spriteBatch)
         {
             game.GraphicsDevice.Clear(Color.Black);
-
-
             spriteBatch.DrawString(font, "Cerebral", new Vector2(height / 2, width / 2 - length), Color.White);
-
         }
 
         public void Update()

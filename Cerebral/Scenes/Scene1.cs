@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using System;
 using System.Collections.Generic;
+using Cerebral.Content;
 #endregion
 
 namespace Cerebral.Scenes
@@ -17,6 +18,7 @@ namespace Cerebral.Scenes
     public class Scene1
     {
         Game1 game;
+        Camera cam;
         private Texture2D background;
         private Texture2D dont;
         private SpriteFont font;
@@ -24,11 +26,13 @@ namespace Cerebral.Scenes
         private MouseState oldState;
         private KeyboardState previousState;
 
+
         public Scene1(Game1 game)
         {
             this.game = game;
             previousState = Keyboard.GetState();
             LoadContent();
+            cam = new Camera(game.GraphicsDevice.Viewport);
         }
 
         /// <summary>
@@ -51,7 +55,6 @@ namespace Cerebral.Scenes
             // Create a new SpriteBatch, which can be used to draw textures.
             background = game.Content.Load<Texture2D>("Assets/Art/forest"); // change these names to the names of your images
             dont = game.Content.Load<Texture2D>("Assets/Art/dont");
-            Texture2D texture = game.Content.Load<Texture2D>("Assets/Art/SmileyWalk");
             font = game.Content.Load<SpriteFont>("Assets/Font/SpriteFont1");
             // TODO: use this.Content to load your game content here
         }
@@ -86,6 +89,7 @@ namespace Cerebral.Scenes
 
             }
             oldState = newState; // this reassigns the old state so that it is ready for next time
+            cam.Update();
         }
 
         /// <summary>
@@ -94,10 +98,10 @@ namespace Cerebral.Scenes
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public void Draw(SpriteBatch spriteBatch)
         {
+
             spriteBatch.Draw(background, new Rectangle(0, 0, 800, 480), Color.Gray);
             spriteBatch.Draw(dont, new Vector2(540, 220), Color.White);
             spriteBatch.DrawString(font, "How many Didn't? " + score, new Vector2(130, 100), Color.Crimson);
-
             // TODO: Add your drawing code here
         }
     }

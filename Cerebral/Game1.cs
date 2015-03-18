@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
 using Cerebral.Scenes;
+using Cerebral.Content;
 #endregion
 
 namespace Cerebral
@@ -27,6 +28,7 @@ namespace Cerebral
         Scene1 sceneOne;
         StartScreen startScreen;
         Screen currentScreen;
+        Camera cam;
 
         public Game1()
             : base()
@@ -59,6 +61,7 @@ namespace Cerebral
             spriteBatch = new SpriteBatch(GraphicsDevice);
             startScreen = new StartScreen(this);
             currentScreen = Screen.StartScreen;
+            cam = new Camera(GraphicsDevice.Viewport);
             // TODO: use this.Content to load your game content here
         }
 
@@ -93,7 +96,7 @@ namespace Cerebral
                         startScreen.Update();
                         break;
             }
-            
+            cam.Update();
         }
 
         /// <summary>
@@ -102,7 +105,7 @@ namespace Cerebral
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-         
+           // spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, null, null, null, null, cam.Transform);
             spriteBatch.Begin();
             switch (currentScreen)
             {
@@ -111,14 +114,13 @@ namespace Cerebral
                         sceneOne.Draw(spriteBatch);
                     break;
                 case Screen.StartScreen:
-                    if (startScreen != null)
+                    if (startScreen != null)   
                         startScreen.Draw(spriteBatch);
                     break;
             }
+            spriteBatch.End();
             //spriteBatch.Draw(background, new Rectangle(0, 0, 800, 480), Color.Gray);
             //spriteBatch.Draw(dont, new Vector2(540, 220), Color.White);
-
-            spriteBatch.End();
 
            // animatedSprite.Draw(spriteBatch, new Vector2(400, 200));
 
