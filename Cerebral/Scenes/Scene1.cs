@@ -24,6 +24,9 @@ namespace Cerebral.Scenes
         Camera cam;
         private Texture2D background;
         private Texture2D dont;
+        private Texture2D beer;
+        private Texture2D shoes;
+        private Texture2D keys;
         private SpriteFont font;
         private int score = 0;
         private MouseState oldState;
@@ -58,6 +61,9 @@ namespace Cerebral.Scenes
             // Create a new SpriteBatch, which can be used to draw textures.
             background = game.Content.Load<Texture2D>("Assets/Art/forest"); // change these names to the names of your images
             dont = game.Content.Load<Texture2D>("Assets/Art/dont");
+            beer = game.Content.Load<Texture2D>("Assets/Art/beer");
+            shoes = game.Content.Load<Texture2D>("Assets/Art/shoes");
+            keys = game.Content.Load<Texture2D>("Assets/Art/keys");
             font = game.Content.Load<SpriteFont>("Assets/Font/SpriteFont1");
             // TODO: use this.Content to load your game content here
         }
@@ -92,9 +98,33 @@ namespace Cerebral.Scenes
             {
                 if (x > 540 && y > 220 && x < 540 + dont.Height && y < 220 + dont.Width)
                 {
-                    MessageBox(new IntPtr(0), "Story item description goes here.", "Name of item goes here.", 0);
+                    if (score == 4)
+                    {
+                        MessageBox(new IntPtr(0), "Good Job Genius! You're dead. I said DON'T!  Listen next time...", "Bad End", 0);
+                        game.Exit();
+                    }
+                    MessageBox(new IntPtr(0), "Please Dont.", "Sign", 0);
                     score++;
                 }
+
+                if (x > 150 && y > 300 && x < 150 + shoes.Height && y < 300 + shoes.Width)
+                {
+                    MessageBox(new IntPtr(0), "Two perfectly placed shoes lay flat on the forest floor. The pair is mysteriously alone in the woods with no owner in sight. Replacing them with your torn pair seems like a good idea if only they weren’t too small. They remind you of the running shoes you used to wear in middle school.", "TWO PERFECTLY PLACED SHOES", 0);
+                   
+                }
+
+                if (x > 330 && y > 350 && x < 330 + beer.Height && y < 350 + beer.Width)
+                {
+                    MessageBox(new IntPtr(0), "The amber liquid in the bottle looks strong, exactly what you need to calm your nerves. One sip or two wouldn’t hurt, right?", "ALCOHOL", 0);
+                 
+                }
+
+                if (x > 300 && y > 230 && x < 300 + keys.Height && y < 230 + keys.Width)
+                {
+                    MessageBox(new IntPtr(0), "The key chain rattles unnervingly as you pick it up. There’s a large number of keys, perhaps to someone’s attic or garage, attached to one ring of the chain. A handy miniature flashlight and bottle opener are attached to the other.", "KEYCHAIN", 0);
+                
+                }
+
 
             }
             oldState = newState; // this reassigns the old state so that it is ready for next time
@@ -108,8 +138,11 @@ namespace Cerebral.Scenes
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(background, new Rectangle(0, 0, 800, 480), Color.Gray);
-            spriteBatch.Draw(dont, new Vector2(540, 220), Color.White);
-            spriteBatch.DrawString(font, "How many Didn't? " + score, new Vector2(130, 100), Color.Crimson);
+          //  spriteBatch.Draw(dont, new Vector2(540, 220), Color.White);
+            spriteBatch.Draw(beer, new Vector2(330, 350), Color.White);
+            spriteBatch.Draw(shoes, new Vector2(150, 300), Color.White);
+            spriteBatch.Draw(keys, new Vector2(300, 230), Color.White);
+           // spriteBatch.DrawString(font, "How many Didn't? " + score, new Vector2(130, 100), Color.Crimson);
             // TODO: Add your drawing code here
         }
 
