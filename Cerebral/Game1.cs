@@ -1,4 +1,5 @@
 ﻿#region Using Statements
+using System.Runtime.InteropServices;
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
@@ -11,21 +12,27 @@ using Cerebral.Scenes;
 using Cerebral.Content;
 #endregion
 
+
 namespace Cerebral
 {
     enum Screen
     {
         Scene1,
-        StartScreen
+        StartScreen,
+        ThirdPerson
     }
     /// <summary>
     /// This is the main type for your game
     /// </summary>
     public class Game1 : Game
     {
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern uint MessageBox(IntPtr hWnd, String text, String caption, uint type);
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Scene1 sceneOne;
+        ThirdPerson thirdperson;
         StartScreen startScreen;
         Screen currentScreen;
         Camera cam;
@@ -36,6 +43,7 @@ namespace Cerebral
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             this.IsMouseVisible = true;
+            Components.Add(new GamerServicesComponent(this));
         }
 
         /// <summary>
@@ -47,7 +55,6 @@ namespace Cerebral
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
             base.Initialize();
         }
 
@@ -94,6 +101,10 @@ namespace Cerebral
                 case Screen.StartScreen:
                     if (startScreen != null)
                         startScreen.Update();
+                        break;
+                case Screen.ThirdPerson:
+                        if (thirdperson != null)
+                            thirdperson.Update();
                         break;
             }
             cam.Update();

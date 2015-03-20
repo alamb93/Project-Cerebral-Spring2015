@@ -1,4 +1,5 @@
 ﻿#region Using Statements
+using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.GamerServices;
@@ -17,6 +18,8 @@ namespace Cerebral.Scenes
     /// </summary>
     public class Scene1
     {
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern uint MessageBox(IntPtr hWnd, String text, String caption, uint type);
         Game1 game;
         Camera cam;
         private Texture2D background;
@@ -68,6 +71,11 @@ namespace Cerebral.Scenes
             // TODO: Unload any non ContentManager content here
         }
 
+        protected static void GetMBResult(IAsyncResult r)
+        {
+            int? b = Guide.EndShowMessageBox(r);
+        }
+
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -84,6 +92,7 @@ namespace Cerebral.Scenes
             {
                 if (x > 540 && y > 220 && x < 540 + dont.Height && y < 220 + dont.Width)
                 {
+                    MessageBox(new IntPtr(0), "Story item description goes here.", "Name of item goes here.", 0);
                     score++;
                 }
 
@@ -98,11 +107,12 @@ namespace Cerebral.Scenes
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public void Draw(SpriteBatch spriteBatch)
         {
-
             spriteBatch.Draw(background, new Rectangle(0, 0, 800, 480), Color.Gray);
             spriteBatch.Draw(dont, new Vector2(540, 220), Color.White);
             spriteBatch.DrawString(font, "How many Didn't? " + score, new Vector2(130, 100), Color.Crimson);
             // TODO: Add your drawing code here
         }
+
+
     }
 }
