@@ -7,19 +7,30 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
-using Microsoft.Xna.Framework.GamerServices;
 using Cerebral.Scenes;
 using Cerebral.Content;
+using Microsoft.Xna.Framework.Media;
 #endregion
 
 
 namespace Cerebral
 {
-    enum Screen
+    public enum Screen
     {
         Scene1,
+        Scene2A,
+        Scene2B,
+        Ending1,
         StartScreen,
-        ThirdPerson
+    }
+
+    public enum State
+    {
+        Walking,
+        Reading,
+        FirstPerson,
+        Watching,
+        Interacting
     }
     /// <summary>
     /// This is the main type for your game
@@ -32,10 +43,12 @@ namespace Cerebral
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Scene1 sceneOne;
-        ThirdPerson thirdperson;
+        Scene2A sceneTwoA;
+        Scene2B sceneTwoB;
+        Ending1 ending;
         StartScreen startScreen;
         Screen currentScreen;
-        Camera cam;
+        State currentState;
 
         public Game1()
             : base()
@@ -43,7 +56,9 @@ namespace Cerebral
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             this.IsMouseVisible = true;
-            Components.Add(new GamerServicesComponent(this));
+            Components.Add(new GameComponent(this));
+            graphics.PreferredBackBufferHeight = 480;
+            graphics.PreferredBackBufferWidth = 800;
         }
 
         /// <summary>
@@ -68,7 +83,7 @@ namespace Cerebral
             spriteBatch = new SpriteBatch(GraphicsDevice);
             startScreen = new StartScreen(this);
             currentScreen = Screen.StartScreen;
-            cam = new Camera(GraphicsDevice.Viewport);
+            currentState = State.Interacting;
             // TODO: use this.Content to load your game content here
         }
 
@@ -79,11 +94,11 @@ namespace Cerebral
         protected override void UnloadContent()
         {
             Content.Unload();
-            // TODO: Unload any non ContentManager content here
+            // TODO: Unload any non ContentManager content here*
         }
 
         /// <summary>
-        /// Allows the game to run logic such as updating the world,
+        /// Allows the game pto run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
@@ -102,12 +117,19 @@ namespace Cerebral
                     if (startScreen != null)
                         startScreen.Update();
                         break;
-                case Screen.ThirdPerson:
-                        if (thirdperson != null)
-                            thirdperson.Update();
-                        break;
+                case Screen.Scene2A:
+                    if (sceneTwoA != null)
+                        sceneTwoA.Update();
+                    break;
+                case Screen.Scene2B:
+                    if (sceneTwoB != null)
+                        sceneTwoB.Update();
+                    break;
+                case Screen.Ending1:
+                    if (ending != null)
+                        ending.Update();
+                    break;
             }
-            cam.Update();
         }
 
         /// <summary>
@@ -116,7 +138,6 @@ namespace Cerebral
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-           // spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, null, null, null, null, cam.Transform);
             spriteBatch.Begin();
             switch (currentScreen)
             {
@@ -127,6 +148,18 @@ namespace Cerebral
                 case Screen.StartScreen:
                     if (startScreen != null)   
                         startScreen.Draw(spriteBatch);
+                    break;
+                case Screen.Scene2A:
+                    if (sceneTwoA != null)
+                        sceneTwoA.Draw(spriteBatch);
+                    break;
+                case Screen.Scene2B:
+                    if (sceneTwoB != null)
+                        sceneTwoB.Draw(spriteBatch);
+                    break;
+                case Screen.Ending1:
+                    if (ending != null)
+                        ending.Draw(spriteBatch);
                     break;
             }
             spriteBatch.End();
@@ -140,11 +173,49 @@ namespace Cerebral
             base.Draw(gameTime);
         }
 
-        public void start()
+        public void transition(Screen newScene, int endingNum)
         {
-            sceneOne = new Scene1(this);
-            currentScreen = Screen.Scene1;
-            startScreen = null;
+            int num = endingNum;
+            currentScreen = newScene;
+            switch (currentScreen)
+            {
+                case Screen.Scene1:
+                    sceneOne = new Scene1(this);
+                    startScreen = null;  
+                    break;
+                case Screen.StartScreen:
+                    startScreen = new StartScreen(this);
+                    sceneOne = null;
+                    sceneTwoA = null;
+                    sceneTwoB = null;
+                    ending = null;
+                    break;
+                case Screen.Scene2A:
+                    sceneTwoA = new Scene2A(this);
+                    sceneOne = null;
+                    break;
+                case Screen.Scene2B:
+                    sceneTwoB = new Scene2B(this);
+                    sceneOne = null;
+                    break;
+                case Screen.Ending1:
+                    ending = new Ending1(this, num);
+                    sceneOne = null;
+                    sceneTwoA = null;
+                    sceneTwoB = null;
+                    startScreen = null;
+                    break;
+            }
+        }
+
+        public State getState()
+        {
+            return currentState;
+        }
+
+        public void setState(State newState)
+        {
+            currentState = newState;
         }
     }
 }

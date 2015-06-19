@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
@@ -14,12 +13,11 @@ namespace Cerebral.Scenes
     {
         private Texture2D player;
         Game1 game;
-        Camera cam;
         private MouseState oldState;
 
         public ThirdPerson(Game1 game){
             this.game = game;
-            cam = new Camera(game.GraphicsDevice.Viewport);
+           // cam = new Camera(game.GraphicsDevice.Viewport);
         }
         public void LoadContent(){
             player = game.Content.Load<Texture2D>("Assets/Art/dont");
@@ -38,7 +36,7 @@ namespace Cerebral.Scenes
                 //Move player sprite
             }
             oldState = newState; // this reassigns the old state so that it is ready for next time
-            cam.Update();
+            //cam.Update();
         }
     }
 }
